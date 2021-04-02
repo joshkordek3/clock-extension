@@ -28,19 +28,35 @@ enum DSOWA {
     //% block="Sunday" 
     Sunday,
 }
+enum Operation {
+    //% block="Continue"
+    Continue, 
+    //% block="Pause"
+    Pause, 
+}
 //% color=#000000 weight=0 icon="\uf017" block="Clock"
 namespace clock {
-    //% block="pause clock"
-    export function pause_clock () {
-        paused = true
-    }
-    //% block="continue clock"
-    export function continue_clock () {
-        paused = false
+    //% block="$oper clock"
+    //% advanced=true
+    export function cp_clock (oper: Operation) {
+        if (oper == Operation.Pause) {
+            paused = true
+        } else if (oper == Operation.Continue) {
+            paused = false
+        }
     }
     //% block="$thing"
     export function _get (thing: Y) {
         return stuff[details2.indexOf(thing)]
+    }
+    //% block="wait in background| $HH hour(s) | $MM minute(s) | $SS second(s)"
+    //% HH.fieldOptions.precision=1 MM.fieldOptions.precision=1 SS.fieldOptions.precision=1
+    export function timer (HH: number, MM: number, SS: number) {
+        HH = (HH * 3.6e+6) + (MM * 60000) + (SS * 1000)
+        MM = control.millis()
+        while(HH > SS) {
+            SS = Math.round((control.millis() - MM))
+        }
     }
     //% block="set $thing to $to"
     export function _set (thing: Y, to: number) {
@@ -59,7 +75,7 @@ namespace clock {
         return DSOW[DOW + DOW_difference]
     }
     let DOW_difference = 0
-    let paused = true
+    let paused = false
     let DSOW_details: any[] = [DSOWA.Monday, DSOWA.Tuesday, DSOWA.Wednesday, DSOWA.Thursday, DSOWA.Friday, DSOWA.Saturday, DSOWA.Sunday]
     let DSOW: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     let DOW = 0
@@ -67,7 +83,7 @@ namespace clock {
     let stuff: number[] = [0, 0, 0, 0, 0, 0]
     let details: string[] = ["Year", "Month", "Day", "Hour", "Minute", "Second"]
     let month_days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    basic.forever(function () {
+    while(true) {
         if (!(paused)) {
             let i = control.millis()
             while (i + 1000 >= control.millis()) {}
@@ -92,8 +108,10 @@ namespace clock {
                 }
             }
         }
-    })
+    }
 }
+clock.timer(0, 0, 10)
+basic.showString(":D")
 //if (thing == Y.Year) {
 //    stuff[0]
 //} else if (thing == Y.Month) {
