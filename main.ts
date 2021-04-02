@@ -3,8 +3,6 @@ enum Y {
     Year,
     //% block="Month"
     Month,
-    //% block="Day of the week"
-    DOW,
     //% block="Day"
     Day,
     //% block="Hour"
@@ -30,7 +28,7 @@ enum DSOWA {
     //% block="Sunday" 
     Sunday,
 }
-//% color=#000 weight=0 icon="\uf017" block="Clock"
+//% color=#000000 weight=0 icon="\uf017" block="Clock"
 namespace clock {
     //% block="pause clock"
     export function pause_clock () {
@@ -42,23 +40,19 @@ namespace clock {
     }
     //% block="$thing"
     export function _get (thing: Y) {
-        if (thing != Y.DOW) {
-            return stuff[details2.indexOf(thing)]
-        } 
-        return 0
+        return stuff[details2.indexOf(thing)]
     }
     //% block="set $thing to $to"
-    export function _set (thing: Y, to: number|string) {
-        if (typeof to == 'number' && thing != Y.DOW) {
-            stuff[details2.indexOf(thing)] = to
-        }
-        if (typeof to == 'string') {
-            DOW = DSOW.indexOf(to)
-        }
+    export function _set (thing: Y, to: number) {
+        stuff[details2.indexOf(thing)] = to
     }
     //% block="set start of the week to $to"
     export function __set (to: DSOWA) {
         DOW_difference = DSOW_details.indexOf(to)
+    }
+    //% block="set day of the week to $to"
+    export function ___set (to: DSOWA) {
+        DOW = DSOW_details.indexOf(to)
     }
     //% block="day of the week"
     export function DOWW () {
