@@ -90,33 +90,32 @@ namespace clock {
     let stuff: number[] = [0, 0, 0, 0, 0, 0]
     let details: string[] = ["Year", "Month", "Day", "Hour", "Minute", "Second"]
     let month_days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    control.runInParallel(function () {
-        while(true) {
-            if (!(paused)) {
-                let i = control.millis()
-                while (i + 1000 >= control.millis()) {}
-                stuff[details.indexOf("Second")] = (stuff[details.indexOf("Second")] + 1) % 60
-                if (stuff[details.indexOf("Second")] == 0) {
-                    stuff[details.indexOf("Minute")] = (stuff[details.indexOf("Minute")] + 1) % 60
-                    if (stuff[details.indexOf("Minute")] == 0) {
-                        stuff[details.indexOf("Hour")] = (stuff[details.indexOf("Hour")] + 1) % 24
-                        if (stuff[details.indexOf("Hour")] == 0) {
-                            if (stuff[details.indexOf("Year")] % 4 == 0 && stuff[details.indexOf("Year")] % 100 != 0) {
-                                month_days[1] = 29
-                            }
-                            stuff[details.indexOf("Day")] = (stuff[details.indexOf("Day")] + 1) % month_days[stuff[details.indexOf("Month")] - 1]
-                            month_days[1] = 28
-                            if (stuff[details.indexOf("Day")] == 0) {
-                                stuff[details.indexOf("Month")] = (stuff[details.indexOf("Month")] + 1) % 12
-                                if (stuff[details.indexOf("Month")] == 0) {
-                                    stuff[details.indexOf("Year")] = (stuff[details.indexOf("Year")] + 1)
-                                }
+    basic.forever(function () {
+        if (!(paused)) {
+            let i = control.millis()
+            while (i + 1000 >= control.millis()) {}
+            stuff[details.indexOf("Second")] = (stuff[details.indexOf("Second")] + 1) % 60
+            if (stuff[details.indexOf("Second")] == 0) {
+                stuff[details.indexOf("Minute")] = (stuff[details.indexOf("Minute")] + 1) % 60
+                if (stuff[details.indexOf("Minute")] == 0) {
+                    stuff[details.indexOf("Hour")] = (stuff[details.indexOf("Hour")] + 1) % 24
+                    if (stuff[details.indexOf("Hour")] == 0) {
+                        if (stuff[details.indexOf("Year")] % 4 == 0 && stuff[details.indexOf("Year")] % 100 != 0) {
+                            month_days[1] = 29
+                        }
+                        stuff[details.indexOf("Day")] = (stuff[details.indexOf("Day")] + 1) % month_days[stuff[details.indexOf("Month")] - 1]
+                        month_days[1] = 28
+                        if (stuff[details.indexOf("Day")] == 0) {
+                            stuff[details.indexOf("Month")] = (stuff[details.indexOf("Month")] + 1) % 12
+                            if (stuff[details.indexOf("Month")] == 0) {
+                                stuff[details.indexOf("Year")] = (stuff[details.indexOf("Year")] + 1)
                             }
                         }
                     }
                 }
             }
         }
+        
     })
 }
 //if (thing == Y.Year) {
