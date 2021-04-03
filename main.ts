@@ -91,6 +91,7 @@ namespace clock {
     let details: string[] = ["Year", "Month", "Day", "Hour", "Minute", "Second"]
     let month_days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     control.runInParallel(function () {
+        while(true) {
             if (!(paused)) {
                 let i = control.millis()
                 while (i + 1000 >= control.millis()) {}
@@ -115,6 +116,7 @@ namespace clock {
                     }
                 }
             }
+        }
     })
 }
 //if (thing == Y.Year) {
