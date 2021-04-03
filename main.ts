@@ -36,6 +36,7 @@ enum Operation {
 }
 //% color=#000000 weight=0 icon="\uf017" block="Clock"
 namespace clock {
+    //% blockId=392828293832
     //% block="$oper clock"
     //% advanced=true
     export function cp_clock (oper: Operation) {
@@ -45,10 +46,12 @@ namespace clock {
             paused = false
         }
     }
+    //% blockId=391838293832
     //% block="$thing"
     export function _get (thing: Y) {
         return stuff[details2.indexOf(thing)]
     }
+    //% blockId=392838293832
     //% block="wait in background| $HH hour(s) | $MM minute(s) | $SS second(s)"
     //% HH.fieldOptions.precision=1 MM.fieldOptions.precision=1 SS.fieldOptions.precision=1
     export function timer (HH: number, MM: number, SS: number) {
@@ -58,18 +61,22 @@ namespace clock {
             SS = Math.round((control.millis() - MM))
         }
     }
+    //% blockId=392838293832289382
     //% block="set $thing to $to"
     export function _set (thing: Y, to: number) {
         stuff[details2.indexOf(thing)] = to
     }
+    //% blockId=392838293832392839289392392
     //% block="set start of the week to $to"
     export function __set (to: DSOWA) {
         DOW_difference = DSOW_details.indexOf(to)
     }
+    //% blockId=392838293832392938293923
     //% block="set day of the week to $to"
     export function ___set (to: DSOWA) {
         DOW = DSOW_details.indexOf(to)
     }
+    //% blockId=3928382938323827387232
     //% block="day of the week"
     export function DOWW () {
         return DSOW[DOW + DOW_difference]
@@ -83,7 +90,7 @@ namespace clock {
     let stuff: number[] = [0, 0, 0, 0, 0, 0]
     let details: string[] = ["Year", "Month", "Day", "Hour", "Minute", "Second"]
     let month_days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    while(true) {
+    basic.forever(function () {
         if (!(paused)) {
             let i = control.millis()
             while (i + 1000 >= control.millis()) {}
@@ -108,10 +115,8 @@ namespace clock {
                 }
             }
         }
-    }
+    })
 }
-clock.timer(0, 0, 10)
-basic.showString(":D")
 //if (thing == Y.Year) {
 //    stuff[0]
 //} else if (thing == Y.Month) {
