@@ -92,8 +92,7 @@ namespace clock {
     let month_days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     basic.forever(function () {
         if (!(paused)) {
-            let i = control.millis()
-            while (i + 1000 >= control.millis()) {}
+            basic.pause(1001)
             stuff[details.indexOf("Second")] = (stuff[details.indexOf("Second")] + 1) % 60
             if (stuff[details.indexOf("Second")] == 0) {
                 stuff[details.indexOf("Minute")] = (stuff[details.indexOf("Minute")] + 1) % 60
