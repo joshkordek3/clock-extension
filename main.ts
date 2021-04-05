@@ -79,7 +79,7 @@ namespace clock {
     //% blockId=3928382938323827387232
     //% block="day of the week"
     export function DOWW () {
-        return DSOW[DOW + DOW_difference]
+        return DSOW[(DOW + DOW_difference) % 7]
     }
     let DOW_difference = 0
     let paused = false
@@ -102,6 +102,7 @@ namespace clock {
                         if (stuff[details.indexOf("Year")] % 4 == 0 && stuff[details.indexOf("Year")] % 100 != 0) {
                             month_days[1] = 29
                         }
+                        DOW = (DOW + 1) % 7
                         stuff[details.indexOf("Day")] = (stuff[details.indexOf("Day")] + 1) % (month_days[stuff[details.indexOf("Month")] - 1] + 1)
                         month_days[1] = 28
                         if (stuff[details.indexOf("Day")] == 0) {
