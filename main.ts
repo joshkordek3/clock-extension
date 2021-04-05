@@ -102,10 +102,10 @@ namespace clock {
                         if (stuff[details.indexOf("Year")] % 4 == 0 && stuff[details.indexOf("Year")] % 100 != 0) {
                             month_days[1] = 29
                         }
-                        stuff[details.indexOf("Day")] = (stuff[details.indexOf("Day")] + 1) % month_days[stuff[details.indexOf("Month")] - 1]
+                        stuff[details.indexOf("Day")] = (stuff[details.indexOf("Day")] + 1) % (month_days[stuff[details.indexOf("Month")] - 1] + 1)
                         month_days[1] = 28
                         if (stuff[details.indexOf("Day")] == 0) {
-                            stuff[details.indexOf("Month")] = (stuff[details.indexOf("Month")] + 1) % 12
+                            stuff[details.indexOf("Month")] = (stuff[details.indexOf("Month")] + 1) % 13
                             if (stuff[details.indexOf("Month")] == 0) {
                                 stuff[details.indexOf("Year")] = (stuff[details.indexOf("Year")] + 1)
                             }
