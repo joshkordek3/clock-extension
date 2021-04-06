@@ -36,6 +36,34 @@ enum Operation {
 }
 //% color=#000000 weight=0 icon="\uf017" block="Clock"
 namespace clock {
+    let received_stuff = ""
+    /**
+     * gets the time from the wifi module (ESP8266) you have, you will still need year, month, and day of the month.
+     */
+    //% blockId=39282829383287
+    //% block="get time from wifi module %SSID %PASS timezone: GMT + $timezone"
+    //% advanced=true
+    //% SSID.defl="MYSSID" PASS.defl="PASSWORD" timezone.defl=8
+    export function wifi_clock (MYSSID: string, PASS: string, timezone: number) {
+        TOMATOWIFIBLYNK.initWifi(true)
+        TOMATOWIFIBLYNK.resetWifi()
+        TOMATOWIFIBLYNK.connectWifi(MYSSID, PASS, "none", 8, true)
+        while(!(TOMATOWIFINTPTIME.isNTPTimeTrue(received_stuff))) {
+            TOMATOWIFINTPTIME.requestTime()
+        }
+        timezone = TOMATOWIFINTPTIME.getNTPDay() - 1
+        if (!(timezone < 0)) {
+            ___set(timezone)
+        } else {
+            ___set(6)
+        }
+        _set(Y.Hour, TOMATOWIFINTPTIME.getNTPHour())
+        _set(Y.Minute, TOMATOWIFINTPTIME.getNTPMinute())
+        _set(Y.Second, TOMATOWIFINTPTIME.getNTPSecond())
+    }
+    serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+        received_stuff = serial.readLine()
+    })   
     //% blockId=392828293832
     //% block="$oper clock"
     //% advanced=true
