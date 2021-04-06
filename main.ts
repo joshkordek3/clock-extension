@@ -63,9 +63,11 @@ namespace clock {
         for(let i = 0; i < SS; i++) {
             count_dracula()
         }
+        paused = false
     }
     //% blockId=392838293832289382
     //% block="set $thing to $to"
+    //% to.fieldOptions.precision=1
     export function _set (thing: Y, to: number) {
         stuff[details2.indexOf(thing)] = to
     }
