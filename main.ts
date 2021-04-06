@@ -51,14 +51,17 @@ namespace clock {
     export function _get (thing: Y) {
         return stuff[details2.indexOf(thing)]
     }
+    /**
+     * pauses everything except for the clock for the given time
+     */
     //% blockId=392838293832
-    //% block="wait in background| $HH hour(s) | $MM minute(s) | $SS second(s)"
+    //% block="pause $HH hour(s) $MM minute(s) $SS second(s)"
     //% HH.fieldOptions.precision=1 MM.fieldOptions.precision=1 SS.fieldOptions.precision=1
     export function timer (HH: number, MM: number, SS: number) {
-        HH = (HH * 3.6e+6) + (MM * 60000) + (SS * 1000)
-        MM = control.millis()
-        while(HH > SS) {
-            SS = Math.round((control.millis() - MM))
+        SS = (HH * 3600) + (MM * 60) + SS
+        paused = true
+        for(let i = 0; i < SS; i++) {
+            count_dracula()
         }
     }
     //% blockId=392838293832289382
@@ -90,32 +93,34 @@ namespace clock {
     let stuff: number[] = [0, 0, 0, 0, 0, 0]
     let details: string[] = ["Year", "Month", "Day", "Hour", "Minute", "Second"]
     let month_days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    basic.forever(function () {
-        if (!(paused)) {
-            basic.pause(1001)
-            stuff[details.indexOf("Second")] = (stuff[details.indexOf("Second")] + 1) % 60
-            if (stuff[details.indexOf("Second")] == 0) {
-                stuff[details.indexOf("Minute")] = (stuff[details.indexOf("Minute")] + 1) % 60
-                if (stuff[details.indexOf("Minute")] == 0) {
-                    stuff[details.indexOf("Hour")] = (stuff[details.indexOf("Hour")] + 1) % 24
-                    if (stuff[details.indexOf("Hour")] == 0) {
-                        if (stuff[details.indexOf("Year")] % 4 == 0 && stuff[details.indexOf("Year")] % 100 != 0) {
-                            month_days[1] = 29
-                        }
-                        DOW = (DOW + 1) % 7
-                        stuff[details.indexOf("Day")] = (stuff[details.indexOf("Day")] + 1) % (month_days[stuff[details.indexOf("Month")] - 1] + 1)
-                        month_days[1] = 28
-                        if (stuff[details.indexOf("Day")] == 0) {
-                            stuff[details.indexOf("Month")] = (stuff[details.indexOf("Month")] + 1) % 13
-                            if (stuff[details.indexOf("Month")] == 0) {
-                                stuff[details.indexOf("Year")] = (stuff[details.indexOf("Year")] + 1)
-                            }
+    function count_dracula () { //count_time
+        basic.pause(1000)
+        stuff[details.indexOf("Second")] = (stuff[details.indexOf("Second")] + 1) % 60
+        if (stuff[details.indexOf("Second")] == 0) {
+            stuff[details.indexOf("Minute")] = (stuff[details.indexOf("Minute")] + 1) % 60
+            if (stuff[details.indexOf("Minute")] == 0) {
+                stuff[details.indexOf("Hour")] = (stuff[details.indexOf("Hour")] + 1) % 24
+                if (stuff[details.indexOf("Hour")] == 0) {
+                    if (stuff[details.indexOf("Year")] % 4 == 0 && stuff[details.indexOf("Year")] % 100 != 0) {
+                        month_days[1] = 29
+                    }
+                    DOW = (DOW + 1) % 7
+                    stuff[details.indexOf("Day")] = (stuff[details.indexOf("Day")] + 1) % (month_days[stuff[details.indexOf("Month")] - 1] + 1)
+                    month_days[1] = 28
+                    if (stuff[details.indexOf("Day")] == 0) {
+                        stuff[details.indexOf("Month")] = (stuff[details.indexOf("Month")] + 1) % 13
+                        if (stuff[details.indexOf("Month")] == 0) {
+                            stuff[details.indexOf("Year")] = (stuff[details.indexOf("Year")] + 1)
                         }
                     }
                 }
             }
         }
-        
+    }
+    basic.forever(function () {
+        if (!(paused)) {
+            count_dracula()
+        } 
     })
 }
 //if (thing == Y.Year) {
