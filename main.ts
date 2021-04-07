@@ -34,6 +34,12 @@ enum Operation {
     //% block="Pause"
     Pause, 
 }
+enum Ringtones {
+    //% block="standard alarm"
+    Stan, 
+    //% block="nice music"
+    Nice, 
+}
 //% color=#000000 weight=0 icon="\uf017" block="Clock"
 namespace clock {
     let received_stuff = ""
@@ -85,13 +91,39 @@ namespace clock {
     //% blockId=392838293832
     //% block="pause $HH hour(s) $MM minute(s) $SS second(s)"
     //% HH.fieldOptions.precision=1 MM.fieldOptions.precision=1 SS.fieldOptions.precision=1
-    export function timer (HH: number, MM: number, SS: number) {
+    export function wait (HH: number, MM: number, SS: number) {
         SS = (HH * 3600) + (MM * 60) + SS
         paused = true
         for(let i = 0; i < SS; i++) {
             count_dracula()
         }
         paused = false
+    }
+    //% blockId=3928382938329989
+    //% block="set an alarm at $HH|:|$MM"
+    //with a ring tone of $ring"
+    //% HH.fieldOptions.precision=1 MM.fieldOptions.precision=1
+    //% HH.min=0 HH.max=23 MM.min=0 MM.max=59
+    export function alarm (HH: number, MM: number) { //, ring: Ringtones) {
+        alarmsh.push(HH)
+        alarmsm.push(MM)
+    }
+    //% blockId=39283829308329989989
+    //% block="when an alarm is triggered"
+    export function alarm_trig (a: () => void) {
+        basic.forever(function () {
+            if (alarmsh.indexOf(_get(Y.Hour)) == alarmsm.indexOf(_get(Y.Minute)) && contains(alarmsh, _get(Y.Hour))) {
+                control.inBackground(a)
+                paused = true
+                while (alarmsh.indexOf(_get(Y.Hour)) == alarmsm.indexOf(_get(Y.Minute)) && contains(alarmsh, _get(Y.Hour))) {
+                    count_dracula
+                }
+                paused = false
+            }
+        })
+    }
+    function contains (arr: number[], val: number) {
+        return arr.indexOf(val) != -1
     }
     //% blockId=392838293832289382
     //% block="set $thing to $to"
@@ -114,6 +146,9 @@ namespace clock {
     export function DOWW () {
         return DSOW[(DOW + DOW_difference) % 7]
     }
+    let alarmsh: number[] = []
+    let alarmsm: number[] = []
+    //let alarm_ringtones: any[] = [Ringtones.Stan, Ringtones.Nice]
     let DOW_difference = 0
     let paused = false
     let DSOW_details: any[] = [DSOWA.Monday, DSOWA.Tuesday, DSOWA.Wednesday, DSOWA.Thursday, DSOWA.Friday, DSOWA.Saturday, DSOWA.Sunday]
