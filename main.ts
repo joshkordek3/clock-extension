@@ -99,6 +99,24 @@ namespace clock {
         }
         paused = false
     }
+    //% blockId=39283829383289
+    //% block="set a timer for $HH hour(s) $MM minute(s) $SS second(s)"
+    //% HH.fieldOptions.precision=1 MM.fieldOptions.precision=1 SS.fieldOptions.precision=1
+    export function timer (HH: number, MM: number, SS: number) {
+        timas.push((HH * 3600) + (MM * 60) + SS)
+    }
+    //% blockId=3928382938328987887879899989798979
+    //% block="when a timer ends"
+    export function timer_trig (a: () => void) {
+        basic.forever(function () {
+            if (timas.indexOf(0) != -1) {
+                while (timas.indexOf(0) != -1) {
+                    timas.removeAt(timas.indexOf(0))
+                }
+                control.inBackground(a)
+            }
+        })
+    }
     //% blockId=3928382938329989
     //% block="set an alarm for $HH|:|$MM"
     //with a ring tone of $ring"
@@ -141,6 +159,7 @@ namespace clock {
     export function DOWW () {
         return DSOW[(DOW + DOW_difference) % 7]
     }
+    let timas: number[] = []
     let alarmsh: number[] = []
     let alarmsm: number[] = []
     //let alarm_ringtones: any[] = [Ringtones.Stan, Ringtones.Nice]
@@ -180,6 +199,13 @@ namespace clock {
     basic.forever(function () {
         if (!(paused)) {
             count_dracula()
+            for(let i = 0; i < timas.length; i++) {
+                if (timas[i] < 0) {
+                    timas.removeAt(i)
+                    continue
+                }
+                timas[i] -= 1
+            }
         } 
     })
 }
