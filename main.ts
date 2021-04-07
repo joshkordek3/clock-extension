@@ -41,9 +41,9 @@ namespace clock {
      * gets the time from the wifi module (ESP8266) you have, you will still need year, month, and day of the month.
      */
     //% blockId=39282829383287
-    //% block="get time from wifi module %SSID %PASS timezone: GMT + $timezone"
+    //% block="get time from wifi module %MYSSID %PASS timezone: GMT + $timezone"
     //% advanced=true
-    //% SSID.defl="MYSSID" PASS.defl="PASSWORD" timezone.defl=8
+    //% MYSSID.defl="MYSSID" PASS.defl="PASSWORD" timezone.defl=8
     export function wifi_clock (MYSSID: string, PASS: string, timezone: number) {
         TOMATOWIFIBLYNK.initWifi(true)
         TOMATOWIFIBLYNK.resetWifi()

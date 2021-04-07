@@ -83,16 +83,23 @@ namespace TOMATOWIFIBLYNK {
     // block="Send a reset signal to the WIFI module" 
     export function resetWifi() {
         serial.writeString("R!\n")
+        clock.timer(0, 0, 1)
     }
     // block="Connect Wifi to SSID ssid with a passcode passcode with a Blynk id of blynkid and a TimeZone of timezone Ready indication readyImg" 
     // ssid.defl=MySSID passcode.defl=MyPasscode blynkid.defl=BlynkPassCode, readyImg.defl =false
     export function connectWifi(ssid: string, passcode: string, blynkid: string, timezone: number, readyImg: boolean) {
         serial.writeString("1\n")
+        clock.timer(0, 0, 1)
         serial.writeString(timezone.toString() + "\n")
+        clock.timer(0, 0, 1)
         serial.writeString(blynkid + "\n")
+        clock.timer(0, 0, 1)
         serial.writeString(ssid + "\n")
+        clock.timer(0, 0, 1)
         serial.writeString(passcode + "\n")
+        clock.timer(0, 0, 1)
         serial.writeString("0\n")
+        clock.timer(0, 0, 1)
         TomatoWifiConnected = 1
     }
     // block="Init Wifi UART pin to 15 & 16, Ready indication readyImg" 
