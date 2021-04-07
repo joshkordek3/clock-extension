@@ -100,7 +100,7 @@ namespace clock {
         paused = false
     }
     //% blockId=3928382938329989
-    //% block="set an alarm at $HH|:|$MM"
+    //% block="set an alarm for $HH|:|$MM"
     //with a ring tone of $ring"
     //% HH.fieldOptions.precision=1 MM.fieldOptions.precision=1
     //% HH.min=0 HH.max=23 MM.min=0 MM.max=59
@@ -108,17 +108,12 @@ namespace clock {
         alarmsh.push(HH)
         alarmsm.push(MM)
     }
-    //% blockId=39283829308329989989
-    //% block="when an alarm is triggered"
+    //% blockId=3928382930832998998998
+    //% block="while an alarm is triggered"
     export function alarm_trig (a: () => void) {
         basic.forever(function () {
-            if (alarmsh.indexOf(_get(Y.Hour)) == alarmsm.indexOf(_get(Y.Minute)) && contains(alarmsh, _get(Y.Hour))) {
+            if (alarmsh.indexOf(_get(Y.Hour)) == alarmsm.indexOf(_get(Y.Minute)) && alarmsh.indexOf(_get(Y.Hour)) != -1 && alarmsm.indexOf(_get(Y.Minute)) != -1) {
                 control.inBackground(a)
-                paused = true
-                while (alarmsh.indexOf(_get(Y.Hour)) == alarmsm.indexOf(_get(Y.Minute)) && contains(alarmsh, _get(Y.Hour))) {
-                    count_dracula
-                }
-                paused = false
             }
         })
     }
