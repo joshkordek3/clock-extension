@@ -173,7 +173,7 @@ namespace clock {
     let details: string[] = ["Year", "Month", "Day", "Hour", "Minute", "Second"]
     let month_days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     function count_dracula () { //count_time
-        basic.pause(1000)
+        basic.pause(999)
         stuff[details.indexOf("Second")] = (stuff[details.indexOf("Second")] + 1) % 60
         if (stuff[details.indexOf("Second")] == 0) {
             stuff[details.indexOf("Minute")] = (stuff[details.indexOf("Minute")] + 1) % 60
