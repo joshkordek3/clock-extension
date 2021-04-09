@@ -64,17 +64,6 @@ namespace TOMATOWIFIBLYNK {
         return _blynkpin
     }
 
-    // block="Is valid Blynk Signal receivedString" 
-    function isBlynkSigTrue(receivedString: string): boolean {
-        if (receivedString.includes("BLYNK=Wv") && TomatoWifiConnected) {
-            _blynkpin = parseInt(receivedString.substr(receivedString.indexOf("v") + 1, receivedString.indexOf("w") - receivedString.indexOf("v") - 1),10)
-            _blynkvalue = receivedString.substr(receivedString.indexOf("w") + 1, receivedString.length() - receivedString.indexOf("w") - 2)
-            return true
-        } else {
-            return false
-        }
-    }
-
     // block="Send single line message msgString to USB console" 
     function sendConsoleMsg(msgString: string) {
         serial.writeString("c"+ msgString + "\n")
